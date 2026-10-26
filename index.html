@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- SDK de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>Cutz Barber Studio | Barbería en Arrecifes</title>
+  <meta name="description" content="Estudio de barbería en Arrecifes especializado en cortes degradados, barba y diseños. Reserva tu turno online de forma rápida y sencilla.">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a href="#" aria-label="Inicio">
+        <img src="images/logo.jpg" alt="Cutz Studio">
+      </a>
+      <div class="hr">
+        <a class="btn" href="#reservas">Reservar</a>
+        <button class="burger" id="bg" aria-label="Menú" aria-expanded="false">
+          <i></i><i></i><i></i>
+        </button>
+      </div>
+    </div>
+    <div id="pb"></div>
+  </header>
+
+  <nav class="menu" id="menu" aria-label="Principal">
+    <a href="#estudio">El estudio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#trabajos">Trabajos</a>
+    <a href="#horarios">Horarios</a>
+    <a href="#reservas">Reservas</a>
+  </nav>
+
+  <main>
+    <!-- Sección Hero -->
+    <section class="hero">
+      <div class="wrap hero-content">
+        <div class="logo-container">
+          <img src="images/logo-2.png" alt="Cutz Barber Studio Logo" class="vector-logo">
+        </div>
+        <h1 class="m">Cutz Barber <em>Studio</em></h1>
+        <p class="lead r">Barbería en Arrecifes.</p>
+        <p class="lead r secondary-desc">Cortes degradados, barba y diseños con precisión de estudio.</p>
+        <div class="btns r center-btns">
+          <a class="btn" href="#reservas">Reservar turno</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- El Estudio / Sobre mí -->
+    <section class="alt" id="estudio">
+      <div class="wrap">
+        <div class="center" style="margin-bottom: 3rem;">
+          <div class="eyebrow">El estudio y trayectoria</div>
+          <h2 class="m">Más de <em>6 años</em> de oficio y precisión</h2>
+        </div>
+        <div class="estudio-grid">
+          <div class="r">
+            <h3 style="font-size: 1.8rem; font-weight: 300; color: var(--tx); margin-bottom: 1rem;">Sobre mí</h3>
+            <p>Llevo más de seis años dedicados de lleno al rubro, perfeccionando técnicas en degradados, barbas y diseños a medida. Mi objetivo es uno solo: que te vayas con exactamente el estilo que viniste a buscar.</p>
+            <p>Trabajamos con reserva de turnos y orden de llegada tanto para hombres como para mujeres, niños y niñas, dándole a cada corte el tiempo, la dedicación y el detalle que se merece en un ambiente exclusivo.</p>
+          </div>
+          <div class="estudio-stats r">
+            <div class="card" style="margin: 0; text-align: center;">
+              <strong>+<span data-to="6">6</span></strong>
+              <span>Años de experiencia</span>
+            </div>
+            <div class="card" style="margin: 0; text-align: center;">
+              <strong data-to="4">4</strong>
+              <span>Servicios principales</span>
+            </div>
+            <div class="card" style="margin: 0; text-align: center;">
+              <strong>Unisex</strong>
+              <span>Atención personalizada</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios">
+      <div class="wrap">
+        <div class="eyebrow">Servicios</div>
+        <h2 class="m">Carta de servicios</h2>
+        <p class="r">Cuatro servicios y un mismo estándar de terminación, para hombre y mujer.</p>
+        <div class="note r">Los valores se confirman al reservar: escribinos y te pasamos el precio junto con la disponibilidad de turnos.</div>
+        <a class="btn r" href="#reservas">Reservar turno</a>
+        <div class="svc">
+          <div class="row"><b>01</b><div><h3>Corte</h3><p>Degradados, clásicos o cortes de tendencia. Lo definimos juntos según tu tipo de pelo y el estilo que buscás.</p><a data-v="Corte" href="#">Consultar valor <span> </span></a></div></div>
+          <div class="row"><b>02</b><div><h3>Corte con barba</h3><p>El servicio completo: corte y barba trabajados en conjunto para un resultado prolijo y equilibrado.</p><a data-v="Corte con barba" href="#">Consultar valor <span> </span></a></div></div>
+          <div class="row"><b>03</b><div><h3>Barba</h3><p>Perfilado y arreglo de barba con contornos limpios y bien definidos.</p><a data-v="Barba" href="#">Consultar valor <span> </span></a></div></div>
+          <div class="row"><b>04</b><div><h3>Diseños</h3><p>Líneas y figuras rasuradas a medida, desde un detalle sutil en el lateral hasta un diseño completo en la nuca.</p><a data-v="Diseños" href="#">Consultar valor <span> </span></a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trabajos -->
+    <section class="alt" id="trabajos">
+      <div class="wrap">
+        <div class="eyebrow">Trabajos</div>
+        <h2 class="m">Cada corte, una firma.</h2>
+        <p class="r">Degradados, mullets con líneas y diseños rasurados: una muestra de lo que sale del sillón.</p>
+        <div class="grid">
+          <figure><img src="images/trabajo-1.jpg" alt="Diseño rasurado en la nuca" loading="lazy"><figcaption>Diseño en la nuca</figcaption></figure>
+          <figure><img src="images/trabajo-5.jpg" alt="Degradado moderno con flequillo" loading="lazy"><figcaption>Degradado moderno</figcaption></figure>
+          <figure><img src="images/trabajo-3.jpg" alt="Mullet con líneas" loading="lazy"><figcaption>Mullet con líneas</figcaption></figure>
+          <figure><img src="images/trabajo-7.jpg" alt="Corte moderno visto de atrás" loading="lazy"><figcaption>Corte moderno</figcaption></figure>
+          <figure><img src="images/trabajo-4.jpg" alt="Diseño rasurado" loading="lazy"><figcaption>Diseño rasurado</figcaption></figure>
+          <figure><img src="images/trabajo-6.jpg" alt="Degradado con textura" loading="lazy"><figcaption>Degradado con textura</figcaption></figure>
+          <figure><img src="images/trabajo-2.jpg" alt="Corte con línea lateral" loading="lazy"><figcaption>Corte con línea</figcaption></figure>
+        </div>
+        <div class="center"><p class="r">¿Te gustó alguno de estos trabajos?</p><a class="btn ghost r" href="#reservas">Pedir turno</a></div>
+      </div>
+    </section>
+
+    <!-- Horarios -->
+    <section id="horarios">
+      <div class="wrap two">
+        <div>
+          <div class="eyebrow">Horarios</div>
+          <h2 class="m">Atención con turno</h2>
+          <p class="r">Trabajamos con reserva de turnos y orden de llegada para dedicarle a cada cliente el tiempo que su corte necesita. Elegí tu día y franja horaria directamente desde el sistema de reservas.</p>
+          <div class="card r">
+            <div><small>Modalidad</small><span>Reserva online en la web</span></div>
+            <div><small>Disponibilidad</small><span>Franjas de 40 minutos</span></div>
+            <div><small>Atención</small><span>Hombre y mujer</span></div>
+          </div>
+        </div>
+        <div>
+          <h2 class="m">Cómo reservar</h2>
+          <div class="step"><b>01</b><div><h3>Elegí el servicio</h3><p>Corte, corte con barba, barba o diseño.</p></div></div>
+          <div class="step"><b>02</b><div><h3>Seleccioná el día y hora</h3><p>Escogé una fecha y un bloque disponible de 40 minutos.</p></div></div>
+          <div class="step"><b>03</b><div><h3>Confirmá tu turno</h3><p>Se guardará en el sistema y se abrirá WhatsApp con el detalle.</p></div></div>
+          <div style="margin-top:2.4rem"><a class="btn r" href="#reservas" style="width:100%">Reservar turno</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Reservas Moderna -->
+    <section id="reservas" style="padding: 5.5rem 0;">
+      <div class="wrap">
+        <div class="center" style="margin-bottom: 3rem;">
+          <div class="eyebrow">Agenda tu espacio</div>
+          <h2 class="m">Reserva <em>Online</em></h2>
+          <p class="r" style="color: var(--mut); font-size: 1.05rem;">Elegí el servicio, seleccioná el día y asegurá tu franja de 40 minutos al instante.</p>
+        </div>
+
+        <form id="f" class="r booking-card">
+          <!-- Paso 1: Servicio -->
+          <div class="booking-step-group">
+            <label><span>01</span> Seleccioná el Servicio</label>
+            <select id="s" class="modern-input">
+              <option value="Corte Degradado">Corte Degradado — 40 min</option>
+              <option value="Corte + Barba">Corte + Barba — 40 min</option>
+              <option value="Corte y Diseño">Corte y Diseño — 40 min</option>
+              <option value="Perfilado de Barba">Perfilado de Barba — 40 min</option>
+            </select>
+          </div>
+
+          <!-- Paso 2: Fecha -->
+          <div class="booking-step-group">
+            <label><span>02</span> Seleccioná el Día</label>
+            <input type="date" id="fecha-input" class="modern-input" required>
+          </div>
+
+          <!-- Paso 3: Horarios Disponibles -->
+          <div class="booking-step-group">
+            <label><span>03</span> Horarios Disponibles (Franjas de 40 min)</label>
+            <div id="grilla-horarios" class="time-slots-grid">
+              <p style="grid-column: span 4; color: var(--mut); font-size: 0.9rem; text-align: center; padding: 1.5rem 0;">Primero selecciona un día para ver los horarios disponibles.</p>
+            </div>
+            <input type="hidden" id="hora-seleccionada" required>
+          </div>
+
+          <!-- Paso 4: Datos Personales -->
+          <div class="booking-step-group" style="border-top: 1px solid var(--line); padding-top: 1.8rem; margin-top: 1.8rem;">
+            <label><span>04</span> Tus Datos de Contacto</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+              <div>
+                <input type="text" id="n" required placeholder="Tu Nombre" class="modern-input" style="margin-bottom: 0;">
+              </div>
+              <div>
+                <input type="tel" id="t" required placeholder="Tu Teléfono / WhatsApp" class="modern-input" style="margin-bottom: 0;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Confirmación -->
+          <button type="submit" class="btn" style="width: 100%; margin-top: 2rem; justify-content: center; display: flex; align-items: center; gap: 0.6rem;">
+            <span>Confirmar y Enviar por WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main> <!-- Fin de main -->
+
+  <!-- Sección de Ubicación (Fuera del footer, como sección independiente) -->
+  <section id="ubicacion" style="padding: 5.5rem 0;">
+    <div class="wrap">
+      <div class="center" style="margin-bottom: 3rem;">
+        <div class="eyebrow">Encuéntranos</div>
+        <h2 class="m">Nuestra <em>Ubicación</em></h2>
+        <p class="r" style="color: var(--mut); font-size: 1.05rem;">Pasá por el estudio y viví la experiencia Cutz Barber en Arrecifes.</p>
+      </div>
+
+      <div class="r" style="max-width: 600px; margin: 0 auto;">
+        <div class="map-card-placeholder">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="var(--gold)" style="margin-bottom: 1rem;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <h4 style="font-weight: 400; margin-bottom: 0.5rem; color: var(--tx); font-size: 1.3rem;">Cutz Barber Studio</h4>
+          <p style="color: var(--mut); font-size: 0.95rem; margin-bottom: 1.5rem;">Arrecifes, Buenos Aires</p>
+          <a href="https://maps.app.goo.gl/tycJtFpZexhWJyak8" target="_blank" rel="noopener" class="btn" style="font-size: 0.9rem; padding: 0.9rem 1.8rem;">Abrir mapa interactivo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer limpio y moderno -->
+  <footer>
+    <div class="wrap footer-content">
+      <span>&copy; 2026 Cutz Barber Studio. Todos los derechos reservados.</span>
+      <div class="footer-links">
+        <a href="https://wa.me/5492478505253" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://instagram.com/ramingok" target="_blank" rel="noopener">Instagram (@ramingok)</a>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa" id="wa" href="https://wa.me/5492478505253" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
