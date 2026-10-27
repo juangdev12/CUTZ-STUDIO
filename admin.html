@@ -195,12 +195,13 @@
   <div id="login-overlay">
     <div class="login-card">
       <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Panel Admin</h2>
-      <p style="color: var(--mut); font-size: 0.9rem; margin-bottom: 1.5rem;">Ingresa la contraseña para gestionar los turnos.</p>
+      <p style="color: var(--mut); font-size: 0.9rem; margin-bottom: 1.5rem;">Ingresa tus credenciales para continuar.</p>
       <form id="login-form">
+        <input type="text" id="admin-user" required placeholder="Usuario" class="modern-input" style="margin-bottom: 1rem; text-align: center;">
         <input type="password" id="admin-pass" required placeholder="Contraseña" class="modern-input" style="margin-bottom: 1rem; text-align: center;">
         <button type="submit" class="btn" style="width: 100%;">Ingresar</button>
       </form>
-      <p id="login-error" style="color: #ff5555; font-size: 0.85rem; margin-top: 1rem; display: none;">Contraseña incorrecta.</p>
+      <p id="login-error" style="color: #ff5555; font-size: 0.85rem; margin-top: 1rem; display: none;">Usuario o contraseña incorrectos.</p>
     </div>
   </div>
 
