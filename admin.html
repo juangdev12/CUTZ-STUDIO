@@ -6,8 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <title>Panel de Administración | Cutz Barber</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
+    /* Estilos de la pantalla de Login */
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-card {
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      padding: 2.5rem;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
     .admin-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -100,7 +122,6 @@
     tr:last-child td {
       border-bottom: none;
     }
-    /* Estilo moderno y legible para Fecha y Hora */
     .datetime-badge {
       display: inline-flex;
       flex-direction: column;
@@ -169,12 +190,27 @@
   </style>
 </head>
 <body>
+
+  <!-- Pantalla de Login -->
+  <div id="login-overlay">
+    <div class="login-card">
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Panel Admin</h2>
+      <p style="color: var(--mut); font-size: 0.9rem; margin-bottom: 1.5rem;">Ingresa la contraseña para gestionar los turnos.</p>
+      <form id="login-form">
+        <input type="password" id="admin-pass" required placeholder="Contraseña" class="modern-input" style="margin-bottom: 1rem; text-align: center;">
+        <button type="submit" class="btn" style="width: 100%;">Ingresar</button>
+      </form>
+      <p id="login-error" style="color: #ff5555; font-size: 0.85rem; margin-top: 1rem; display: none;">Contraseña incorrecta.</p>
+    </div>
+  </div>
+
   <header>
     <div class="wrap">
       <a href="index.html" aria-label="Inicio">
         <img src="images/logo.jpg" alt="Cutz Studio">
       </a>
       <div class="hr">
+        <button onclick="cerrarSesion()" class="btn ghost" style="margin-right: 0.5rem; font-size: 0.75rem; padding: 0.6rem 1rem;">Cerrar Sesión</button>
         <a class="btn ghost" href="index.html">Ver Sitio Web</a>
       </div>
     </div>
@@ -221,15 +257,15 @@
         <form id="manual-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; background: transparent; border: none; padding: 0;">
           <div>
             <label style="font-size: 0.85rem;">Nombre del Cliente</label>
-            <input type="text" id="m-nombre" required placeholder="Ej: Carlos Gómez" style="padding: 0.7rem; font-size: 0.95rem;">
+            <input type="text" id="m-nombre" required placeholder="Ej: Carlos Gómez" style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
           </div>
           <div>
             <label style="font-size: 0.85rem;">Teléfono</label>
-            <input type="tel" id="m-telefono" required placeholder="Ej: 2478..." style="padding: 0.7rem; font-size: 0.95rem;">
+            <input type="tel" id="m-telefono" required placeholder="Ej: 2478..." style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
           </div>
           <div>
             <label style="font-size: 0.85rem;">Servicio</label>
-            <select id="m-servicio" style="padding: 0.7rem; font-size: 0.95rem;">
+            <select id="m-servicio" style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
               <option value="Corte Degradado">Corte Degradado (40 min)</option>
               <option value="Corte + Barba">Corte + Barba (40 min)</option>
               <option value="Corte y Diseño">Corte y Diseño (40 min)</option>
@@ -238,11 +274,11 @@
           </div>
           <div>
             <label style="font-size: 0.85rem;">Fecha</label>
-            <input type="date" id="m-fecha" required style="padding: 0.7rem; font-size: 0.95rem;">
+            <input type="date" id="m-fecha" required style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
           </div>
           <div>
             <label style="font-size: 0.85rem;">Hora</label>
-            <select id="m-hora" style="padding: 0.7rem; font-size: 0.95rem;">
+            <select id="m-hora" style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
               <option value="10:00">10:00</option>
               <option value="10:40">10:40</option>
               <option value="11:20">11:20</option>
@@ -301,6 +337,36 @@
 
     let todosLosTurnos = [];
     let filtroActual = 'todos';
+
+    // CONTRASEÑA DEL PANEL (Puedes cambiar 'cutz2026' por la clave que prefieras)
+    const PASSWORD_ADMIN = 'cutz2026';
+
+    // Verificar si ya inició sesión en esta pestaña
+    if (sessionStorage.getItem('cutz_auth') === 'true') {
+      document.getElementById('login-overlay').style.display = 'none';
+      cargarTurnos();
+    }
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const passInput = document.getElementById('admin-pass').value;
+      const errorMsg = document.getElementById('login-error');
+
+      if (passInput === PASSWORD_ADMIN) {
+        sessionStorage.setItem('cutz_auth', 'true');
+        document.getElementById('login-overlay').style.display = 'none';
+        errorMsg.style.display = 'none';
+        cargarTurnos();
+      } else {
+        errorMsg.style.display = 'block';
+        document.getElementById('admin-pass').value = '';
+      }
+    });
+
+    window.cerrarSesion = function() {
+      sessionStorage.removeItem('cutz_auth');
+      location.reload();
+    }
 
     function toggleFormularioManual() {
       const formContainer = document.getElementById('form-manual');
@@ -376,8 +442,6 @@
       tbody.innerHTML = '';
       datosFiltrados.forEach(t => {
         const fechaObj = new Date(t.fecha_hora);
-        
-        // Formato visual ultra claro y moderno para fecha y hora
         const opcionesFecha = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
         const fechaFormateada = fechaObj.toLocaleDateString('es-AR', opcionesFecha);
         const horaFormateada = fechaObj.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
@@ -406,7 +470,6 @@
       });
     }
 
-    // Guardar Turno Manual con validación estricta anti-superposición
     document.getElementById('manual-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const nombre = document.getElementById('m-nombre').value.trim();
@@ -420,7 +483,6 @@
       const fechaLocalObj = new Date(anio, mes - 1, dia, h, m, 0);
       const isoString = fechaLocalObj.toISOString();
 
-      // Verificar si ya existe un turno en ese día y hora exacta
       const horaSeleccionadaFiltro = `${h}:${m}`;
       const yaOcupado = todosLosTurnos.some(t => {
         const d = new Date(t.fecha_hora);
@@ -464,8 +526,6 @@
         }
       }
     }
-
-    cargarTurnos();
   </script>
 </body>
 </html>
