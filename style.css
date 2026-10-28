@@ -269,10 +269,10 @@ section {
   background: var(--bg2);
 }
 
-/* --- Sección Principal Adaptable (Hero con foto-principal.jpg) --- */
+/* --- Sección Principal Adaptable con foto-principal.jpeg --- */
 .hero-section {
   position: relative;
-  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpg');
+  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -284,7 +284,6 @@ section {
   align-items: center;
   justify-content: center;
 }
-
 .hero-container {
   display: flex;
   flex-direction: column;
