@@ -394,98 +394,92 @@
       }
     }
 
-    async function cargarTurnos() {
-      const tbody = document.getElementById('tabla-turnos');
-      
-      if (!supabaseClient) {
-        tbody.innerHTML = `<tr><td colspan="6" style="padding: 3rem; text-align: center; color: #ff5555;">Error de conexión con Supabase.</td></tr>`;
-        return;
-      }
+   async function cargarTurnos() {
+      const contenedorTurnos = document.getElementById('lista-turnos'); // O el ID que uses para mostrar la tabla/lista de turnos
+      if (!contenedorTurnos) return;
 
-      const { data, error } = await supabaseClient
+      contenedorTurnos.innerHTML = '<p style="color: var(--mut); padding: 1rem;">Cargando turnos...</p>';
+
+      if (!supabaseClient) return;
+
+      const { data: turnos, error } = await supabaseClient
         .from('turnos')
         .select('*')
+        .eq('estado', 'confirmado')
         .order('fecha_hora', { ascending: true });
 
       if (error) {
-        tbody.innerHTML = `<tr><td colspan="6" style="padding: 3rem; text-align: center; color: #ff5555;">Error al cargar: ${error.message}</td></tr>`;
+        contenedorTurnos.innerHTML = '<p style="color: #ff5555;">Error al cargar los turnos.</p>';
         return;
       }
 
-      todosLosTurnos = data || [];
-      actualizarEstadisticas();
-      renderizarTabla();
-    }
-
-    function actualizarEstadisticas() {
-      const hoyStr = new Date().toISOString().split('T')[0];
-      
-      const total = todosLosTurnos.length;
-      const turnosHoy = todosLosTurnos.filter(t => t.fecha_hora.startsWith(hoyStr)).length;
-      const turnosFuturos = total - turnosHoy;
-
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-hoy').textContent = turnosHoy;
-      document.getElementById('stat-futuros').textContent = turnosFuturos;
-    }
-
-    function filtrarTurnos(tipo, btn) {
-      filtroActual = tipo;
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        if(!b.textContent.includes('Actualizar') && !b.textContent.includes('Nuevo Turno Manual') && !b.textContent.includes('Cancelar') && !b.textContent.includes('Guardar Turno')) {
-          b.classList.remove('active');
-        }
-      });
-      if(btn) btn.classList.add('active');
-      renderizarTabla();
-    }
-
-    function renderizarTabla() {
-      const tbody = document.getElementById('tabla-turnos');
-      const hoyStr = new Date().toISOString().split('T')[0];
-
-      let datosFiltrados = todosLosTurnos;
-
-      if (filtroActual === 'hoy') {
-        datosFiltrados = todosLosTurnos.filter(t => t.fecha_hora.startsWith(hoyStr));
-      } else if (filtroActual === 'futuros') {
-        datosFiltrados = todosLosTurnos.filter(t => t.fecha_hora > hoyStr + 'T23:59:59');
-      }
-
-      if (datosFiltrados.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="padding: 3rem; text-align: center; color: var(--mut);">No se encontraron turnos en esta categoría.</td></tr>`;
+      if (!turnos || turnos.length === 0) {
+        contenedorTurnos.innerHTML = '<p style="color: var(--mut); padding: 1rem;">No hay turnos agendados por el momento.</p>';
         return;
       }
 
-      tbody.innerHTML = '';
-      datosFiltrados.forEach(t => {
+      // Agrupar turnos por fecha para una mejor distinción visual
+      let turnosPorDia = {};
+
+      turnos.forEach(t => {
+        // Convertir la fecha UTC de Supabase a la zona horaria de Argentina
         const fechaObj = new Date(t.fecha_hora);
-        const opcionesFecha = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-        const fechaFormateada = fechaObj.toLocaleDateString('es-AR', opcionesFecha);
-        const horaFormateada = fechaObj.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        
+        const fechaFormateadaDia = fechaObj.toLocaleDateString('es-AR', {
+          timeZone: 'America/Argentina/Buenos_Aires',
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
 
-        const limpiaTel = t.telefono.replace(/\D/g,'');
-        const mensajeWa = encodeURIComponent(`Hola ${t.nombre}, te escribimos de Cutz Barber para confirmar tu turno del ${fechaFormateada} a las ${horaFormateada} hs.`);
+        const horaFormateada = fechaObj.toLocaleTimeString('es-AR', {
+          timeZone: 'America/Argentina/Buenos_Aires',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false // Formato 24hs
+        });
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>
-            <div class="datetime-badge">
-              <span class="datetime-date">${fechaFormateada}</span>
-              <span class="datetime-time">${horaFormateada} hs</span>
-            </div>
-          </td>
-          <td><strong>${t.nombre}</strong></td>
-          <td>${t.telefono}</td>
-          <td>${t.servicio}</td>
-          <td><span class="badge">${t.estado}</span></td>
-          <td style="text-align: center; white-space: nowrap;">
-            <a href="https://wa.me/549${limpiaTel}?text=${mensajeWa}" target="_blank" rel="noopener" class="btn-wa-action" title="Enviar WhatsApp">💬 WhatsApp</a>
-            <button onclick="eliminarTurno('${t.id}')" class="btn-delete-action">Eliminar</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+        if (!turnosPorDia[fechaFormateadaDia]) {
+          turnosPorDia[fechaFormateadaDia] = [];
+        }
+        turnosPorDia[fechaFormateadaDia].push({ ...t, horaLegible: horaFormateada });
       });
+
+      // Generar el HTML agrupado por días
+      let htmlFinal = '';
+
+      for (const [dia, listaTurnos] of Object.entries(turnosPorDia)) {
+        htmlFinal += `
+          <div class="admin-day-group" style="margin-bottom: 2rem; background: var(--bg2, #141414); border: 1px solid var(--line, #222); border-radius: 8px; overflow: hidden;">
+            <div class="admin-day-header" style="background: rgba(212, 181, 114, 0.1); padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--line, #222);">
+              <h3 style="color: var(--gold, #d4b572); font-size: 1.05rem; text-transform: capitalize; margin: 0;">📅 ${dia}</h3>
+            </div>
+            <div class="admin-day-slots" style="padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;">
+        `;
+
+        listaTurnos.forEach(turno => {
+          htmlFinal += `
+            <div class="admin-turno-item" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1rem; border-radius: 6px; border-left: 3px solid var(--gold, #d4b572);">
+              <div>
+                <strong style="color: #fff; font-size: 1rem;">⏰ ${turno.horaLegible} hs</strong> — 
+                <span style="color: #f3e7c4;">${turno.nombre}</span> 
+                <small style="color: var(--mut); margin-left: 0.5rem;">(${turno.servicio})</small>
+              </div>
+              <div style="color: var(--mut); font-size: 0.9rem;">
+                📞 ${turno.telefono}
+              </div>
+            </div>
+          `;
+        });
+
+        htmlFinal += `
+            </div>
+          </div>
+        `;
+      }
+
+      contenedorTurnos.innerHTML = htmlFinal;
     }
 
     document.getElementById('manual-form').addEventListener('submit', async function(e) {
