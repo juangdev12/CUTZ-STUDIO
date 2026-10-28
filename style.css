@@ -80,37 +80,44 @@ h1 em, h2 em {
   transform-origin: left;
 }
 
+/* --- Estilo unificado y Premium para TODOS los botones --- */
 .btn {
   display: inline-block;
-  background: var(--gold);
+  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
   color: #0a0a0a;
   text-decoration: none;
-  font: 600 .95rem 'Outfit', sans-serif;
-  letter-spacing: .2em;
+  font: 700 .95rem 'Outfit', sans-serif;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 1.15rem 2rem;
-  border: 1px solid var(--gold);
-  border-radius: 3px;
+  padding: 1rem 2.2rem;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
   text-align: center;
-  transition: background .3s, color .3s, transform .3s;
+  box-shadow: 0 10px 25px rgba(200, 169, 106, 0.25);
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background: transparent;
-  color: var(--gold);
   transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(200, 169, 106, 0.4);
+  background: linear-gradient(135deg, #fff 0%, #d4b572 100%);
+  color: #0a0a0a;
 }
 
+/* Si quieres que los botones secundarios o "ghost" mantengan una variante sutil pero con el mismo formato */
 .btn.ghost {
-  background: transparent;
-  color: var(--tx);
-  border-color: var(--line);
+  background: rgba(200, 169, 106, 0.1);
+  color: var(--gold);
+  border: 1px solid rgba(200, 169, 106, 0.3);
+  box-shadow: none;
 }
 
 .btn.ghost:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
+  color: #0a0a0a;
+  border-color: transparent;
+  box-shadow: 0 10px 25px rgba(200, 169, 106, 0.25);
 }
 
 .btns {
@@ -289,14 +296,18 @@ section {
 
 .hero-brand-title {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(2.8rem, 9vw, 6rem);
+  /* Reducimos un poco el tamaño mínimo y máximo para que entre cómodo en cualquier celular */
+  font-size: clamp(2.3rem, 8vw, 5.5rem);
   font-weight: 800;
   color: #fff;
-  line-height: 1.05;
+  line-height: 1.1;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
   text-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-  word-break: break-word;
+  /* Propiedad clave para forzar que la palabra se adapte y no se corte a mitad de sílaba */
+  word-break: normal;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 .hero-brand-title em {
@@ -325,7 +336,7 @@ section {
   padding: 0 0.5rem;
 }
 
-/* --- Estilo Premium para el Botón de Reserva --- */
+/* Clase específica por si usabas la extendida */
 .btn-gold-premium {
   display: inline-block;
   background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
