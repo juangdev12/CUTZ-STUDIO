@@ -197,7 +197,7 @@
       <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Panel Admin</h2>
       <p style="color: var(--mut); font-size: 0.9rem; margin-bottom: 1.5rem;">Ingresa tus credenciales para continuar.</p>
       <form id="login-form">
-        <input type="text" id="admin-user" required placeholder="Usuario" class="modern-input" style="margin-bottom: 1rem; text-align: center;">
+        <input type="email" id="admin-user" required placeholder="Correo electrónico" class="modern-input" style="margin-bottom: 1rem; text-align: center;">
         <input type="password" id="admin-pass" required placeholder="Contraseña" class="modern-input" style="margin-bottom: 1rem; text-align: center;">
         <button type="submit" class="btn" style="width: 100%;">Ingresar</button>
       </form>
@@ -267,10 +267,10 @@
           <div>
             <label style="font-size: 0.85rem;">Servicio</label>
             <select id="m-servicio" style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
-              <option value="Corte Degradado">Corte Degradado (40 min)</option>
-              <option value="Corte + Barba">Corte + Barba (40 min)</option>
-              <option value="Corte y Diseño">Corte y Diseño (40 min)</option>
-              <option value="Perfilado de Barba">Perfilado de Barba (40 min)</option>
+              <option value="Corte Degradado">Corte Degradado (30 min)</option>
+              <option value="Corte + Barba">Corte + Barba (30 min)</option>
+              <option value="Corte y Diseño">Corte y Diseño (30 min)</option>
+              <option value="Perfilado de Barba">Perfilado de Barba (30 min)</option>
             </select>
           </div>
           <div>
@@ -281,16 +281,18 @@
             <label style="font-size: 0.85rem;">Hora</label>
             <select id="m-hora" style="padding: 0.7rem; font-size: 0.95rem;" class="modern-input">
               <option value="10:00">10:00</option>
-              <option value="10:40">10:40</option>
-              <option value="11:20">11:20</option>
+              <option value="10:30">10:30</option>
+              <option value="11:00">11:00</option>
+              <option value="11:30">11:30</option>
               <option value="12:00">12:00</option>
-              <option value="12:40">12:40</option>
-              <option value="16:00">16:00</option>
-              <option value="16:40">16:40</option>
-              <option value="17:20">17:20</option>
+              <option value="12:30">12:30</option>
+              <option value="16:30">16:30</option>
+              <option value="17:00">17:00</option>
+              <option value="17:30">17:30</option>
               <option value="18:00">18:00</option>
-              <option value="18:40">18:40</option>
-              <option value="19:20">19:20</option>
+              <option value="18:30">18:30</option>
+              <option value="19:00">19:00</option>
+              <option value="19:30">19:30</option>
             </select>
           </div>
           <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 0.5rem;">
@@ -362,7 +364,6 @@
         return;
       }
 
-      // Autenticación oficial y segura con Supabase Auth
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: emailInput,
         password: passInput,
@@ -386,100 +387,127 @@
       }
       location.reload();
     }
+
     function toggleFormularioManual() {
       const formContainer = document.getElementById('form-manual');
       formContainer.classList.toggle('open');
       if(formContainer.classList.contains('open')) {
-        document.getElementById('m-fecha').value = new Date().toISOString().split('T')[0];
+        document.getElementById('m-fecha').value = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
       }
     }
 
-   async function cargarTurnos() {
-      const contenedorTurnos = document.getElementById('lista-turnos'); // O el ID que uses para mostrar la tabla/lista de turnos
-      if (!contenedorTurnos) return;
+    async function cargarTurnos() {
+      const tbody = document.getElementById('tabla-turnos');
+      if (!tbody) return;
 
-      contenedorTurnos.innerHTML = '<p style="color: var(--mut); padding: 1rem;">Cargando turnos...</p>';
+      tbody.innerHTML = '<tr><td colspan="6" style="padding: 3rem; text-align: center; color: var(--mut);">Cargando reservas...</td></tr>';
 
       if (!supabaseClient) return;
 
-      const { data: turnos, error } = await supabaseClient
+      const { data, error } = await supabaseClient
         .from('turnos')
         .select('*')
-        .eq('estado', 'confirmado')
         .order('fecha_hora', { ascending: true });
 
       if (error) {
-        contenedorTurnos.innerHTML = '<p style="color: #ff5555;">Error al cargar los turnos.</p>';
+        tbody.innerHTML = `<tr><td colspan="6" style="padding: 3rem; text-align: center; color: #ff5555;">Error al cargar los turnos: ${error.message}</td></tr>`;
         return;
       }
 
-      if (!turnos || turnos.length === 0) {
-        contenedorTurnos.innerHTML = '<p style="color: var(--mut); padding: 1rem;">No hay turnos agendados por el momento.</p>';
-        return;
-      }
+      todosLosTurnos = data || [];
+      actualizarEstadisticasYTabla();
+    }
 
-      // Agrupar turnos por fecha para una mejor distinción visual
-      let turnosPorDia = {};
+    function filtrarTurnos(filtro, btnElement) {
+      filtroActual = filtro;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        if(b.parentElement.classList.contains('filter-btns')) {
+          b.classList.remove('active');
+        }
+      });
+      if(btnElement) btnElement.classList.add('active');
+      actualizarEstadisticasYTabla();
+    }
 
-      turnos.forEach(t => {
-        // Convertir la fecha UTC de Supabase a la zona horaria de Argentina
+    function actualizarEstadisticasYTabla() {
+      const hoyArgStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
+      
+      let total = 0;
+      let hoyCount = 0;
+      let futurosCount = 0;
+
+      const turnosProcesados = todosLosTurnos.map(t => {
         const fechaObj = new Date(t.fecha_hora);
+        const fechaStr = fechaObj.toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
         
-        const fechaFormateadaDia = fechaObj.toLocaleDateString('es-AR', {
+        const fechaFormateada = fechaObj.toLocaleDateString('es-AR', {
           timeZone: 'America/Argentina/Buenos_Aires',
-          weekday: 'long',
+          weekday: 'short',
           day: 'numeric',
-          month: 'long',
-          year: 'numeric'
+          month: 'short'
         });
 
         const horaFormateada = fechaObj.toLocaleTimeString('es-AR', {
           timeZone: 'America/Argentina/Buenos_Aires',
           hour: '2-digit',
           minute: '2-digit',
-          hour12: false // Formato 24hs
+          hour12: false
         });
 
-        if (!turnosPorDia[fechaFormateadaDia]) {
-          turnosPorDia[fechaFormateadaDia] = [];
+        if (t.estado === 'confirmado' || t.estado === 'pendiente') {
+          total++;
+          if (fechaStr === hoyArgStr) hoyCount++;
+          if (fechaStr > hoyArgStr) futurosCount++;
         }
-        turnosPorDia[fechaFormateadaDia].push({ ...t, horaLegible: horaFormateada });
+
+        return { ...t, fechaStr, fechaFormateada, horaFormateada };
       });
 
-      // Generar el HTML agrupado por días
-      let htmlFinal = '';
+      // Actualizar tarjetas de estadísticas
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-hoy').textContent = hoyCount;
+      document.getElementById('stat-futuros').textContent = futurosCount;
 
-      for (const [dia, listaTurnos] of Object.entries(turnosPorDia)) {
-        htmlFinal += `
-          <div class="admin-day-group" style="margin-bottom: 2rem; background: var(--bg2, #141414); border: 1px solid var(--line, #222); border-radius: 8px; overflow: hidden;">
-            <div class="admin-day-header" style="background: rgba(212, 181, 114, 0.1); padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--line, #222);">
-              <h3 style="color: var(--gold, #d4b572); font-size: 1.05rem; text-transform: capitalize; margin: 0;">📅 ${dia}</h3>
-            </div>
-            <div class="admin-day-slots" style="padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;">
-        `;
+      // Filtrar según el botón seleccionado
+      const turnosFiltrados = turnosProcesados.filter(t => {
+        if (t.estado !== 'confirmado' && t.estado !== 'pendiente') return false;
+        if (filtroActual === 'hoy') return t.fechaStr === hoyArgStr;
+        if (filtroActual === 'futuros') return t.fechaStr > hoyArgStr;
+        return true; // 'todos'
+      });
 
-        listaTurnos.forEach(turno => {
-          htmlFinal += `
-            <div class="admin-turno-item" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1rem; border-radius: 6px; border-left: 3px solid var(--gold, #d4b572);">
-              <div>
-                <strong style="color: #fff; font-size: 1rem;">⏰ ${turno.horaLegible} hs</strong> — 
-                <span style="color: #f3e7c4;">${turno.nombre}</span> 
-                <small style="color: var(--mut); margin-left: 0.5rem;">(${turno.servicio})</small>
-              </div>
-              <div style="color: var(--mut); font-size: 0.9rem;">
-                📞 ${turno.telefono}
-              </div>
-            </div>
-          `;
-        });
-
-        htmlFinal += `
-            </div>
-          </div>
-        `;
+      const tbody = document.getElementById('tabla-turnos');
+      if (turnosFiltrados.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="padding: 3rem; text-align: center; color: var(--mut);">No hay reservas registradas para este filtro.</td></tr>';
+        return;
       }
 
-      contenedorTurnos.innerHTML = htmlFinal;
+      let html = '';
+      turnosFiltrados.forEach(t => {
+        const telLimpio = t.telefono.replace(/\D/g, '');
+        const msgWa = encodeURIComponent(`Hola ${t.nombre}, te escribimos de Cutz Studio para recordarte tu turno agendado.`);
+
+        html += `
+          <tr>
+            <td>
+              <div class="datetime-badge">
+                <span class="datetime-date">${t.fechaFormateada}</span>
+                <span class="datetime-time">${t.horaFormateada} hs</span>
+              </div>
+            </td>
+            <td><strong>${t.nombre}</strong></td>
+            <td>${t.telefono}</td>
+            <td>${t.servicio}</td>
+            <td><span class="badge">${t.estado}</span></td>
+            <td style="text-align: center;">
+              <a href="https://wa.me/549${telLimpio}?text=${msgWa}" target="_blank" class="btn-wa-action" title="Contactar por WhatsApp">💬 WhatsApp</a>
+              <button onclick="eliminarTurno('${t.id}')" class="btn-delete-action" title="Eliminar Turno">🗑️ Eliminar</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
     }
 
     document.getElementById('manual-form').addEventListener('submit', async function(e) {
@@ -495,12 +523,11 @@
       const fechaLocalObj = new Date(anio, mes - 1, dia, h, m, 0);
       const isoString = fechaLocalObj.toISOString();
 
-      const horaSeleccionadaFiltro = `${h}:${m}`;
       const yaOcupado = todosLosTurnos.some(t => {
         const d = new Date(t.fecha_hora);
         const dStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
         const hStr = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-        return dStr === fecha && hStr === horaSeleccionadaFiltro && (t.estado === 'confirmado' || t.estado === 'pendiente');
+        return dStr === fecha && hStr === hora && (t.estado === 'confirmado' || t.estado === 'pendiente');
       });
 
       if (yaOcupado) {
