@@ -269,39 +269,43 @@ section {
   background: var(--bg2);
 }
 
-/* --- Sección Principal Adaptable con foto-principal.jpeg --- */
+/* --- Sección Principal Impactante (Hero) --- */
 .hero-section {
   position: relative;
-  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpeg');
+  background: linear-gradient(rgba(10, 10, 10, 0.70), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 4.5rem 1rem 4rem;
+  padding: 6rem 1rem 5rem; /* Mayor espacio vertical para que respire el contenido */
   text-align: center;
   border-bottom: 1px solid var(--line);
-  min-height: 85vh;
+  min-height: 90vh; /* Ocupa casi toda la altura de la pantalla del celular */
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .hero-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   max-width: 900px;
   margin: 0 auto;
   width: 100%;
+  gap: 1.5rem; /* Controla la distancia justa entre bloques */
 }
 
+/* Título Cutz Studio Gigante */
 .hero-brand-title {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(3rem, 11vw, 5.5rem);
+  font-size: clamp(3.8rem, 15vw, 6.5rem); /* Letra mucho más grande que abarca todo el ancho */
   font-weight: 800;
   color: #fff;
-  line-height: 1.05;
-  margin-bottom: 1.2rem;
-  letter-spacing: -0.02em;
-  text-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+  line-height: 0.95; /* Líneas más juntas para que luzca imponente */
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.03em;
+  text-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
 }
 
 .hero-brand-title em {
@@ -312,11 +316,13 @@ section {
   -webkit-text-fill-color: transparent;
 }
 
+/* Subtítulo más abajo y proporcionado */
 .hero-subtitle {
-  font-size: 0.85rem; /* Letra más chica y elegante, con buena jerarquía */
+  font-size: 0.85rem;
   color: #f3e7c4;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-top: 1rem; /* Empuja el subtítulo más abajo del título grande */
+  margin-bottom: 0.3rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -328,6 +334,11 @@ section {
   margin-bottom: 2rem;
   line-height: 1.4;
   padding: 0 0.5rem;
+}
+
+/* Botón de reserva ubicado con espacio cómodo al final */
+.hero-action {
+  margin-top: 1rem;
 }
 
 /* Clase específica por si usabas la extendida */
