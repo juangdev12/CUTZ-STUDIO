@@ -920,3 +920,85 @@ footer .wrap.footer-content {
 .menu-toggle-btn:hover .hamburger-line {
   background-color: var(--gold);
 }
+
+/* --- Sección Principal con fondo texturizado y letras grandes --- */
+.hero-section {
+  position: relative;
+  /* Mantiene tu fondo original o una capa oscura translúcida para que la silla/textura se insinúe de fondo */
+  background-color: rgba(10, 10, 10, 0.85);
+  background-image: radial-gradient(circle at center, rgba(30, 30, 30, 0.4) 0%, rgba(10, 10, 10, 0.9) 100%), url('images/tu-fondo.jpg'); /* O tu imagen de fondo actual */
+  background-size: cover;
+  background-position: center;
+  padding: 7rem 1.5rem 6rem;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Nombre CutzStudio Grande y Elegante */
+.hero-brand-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3.2rem, 8vw, 6.5rem); /* Se adapta para verse imponente en PC y celular */
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+}
+
+.hero-brand-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: #f3e7c4;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  color: var(--mut);
+  max-width: 550px;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+/* --- Estilo Premium para el Botón de Reserva --- */
+.btn-gold-premium {
+  display: inline-block;
+  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
+  color: #0a0a0a;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 25px rgba(200, 169, 106, 0.25);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gold-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(200, 169, 106, 0.4);
+  background: linear-gradient(135deg, #fff 0%, #d4b572 100%);
+}
