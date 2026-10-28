@@ -276,7 +276,7 @@ section {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 6rem 1rem 5rem;
+  padding: 4.5rem 1rem 4rem;
   text-align: center;
   border-bottom: 1px solid var(--line);
   min-height: 85vh;
@@ -296,18 +296,13 @@ section {
 
 .hero-brand-title {
   font-family: 'Syne', sans-serif;
-  /* Reducimos un poco el tamaño mínimo y máximo para que entre cómodo en cualquier celular */
-  font-size: clamp(2.3rem, 8vw, 5.5rem);
+  font-size: clamp(3rem, 11vw, 5.5rem);
   font-weight: 800;
   color: #fff;
-  line-height: 1.1;
-  margin-bottom: 1rem;
+  line-height: 1.05;
+  margin-bottom: 1.2rem;
   letter-spacing: -0.02em;
   text-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-  /* Propiedad clave para forzar que la palabra se adapte y no se corte a mitad de sílaba */
-  word-break: normal;
-  overflow-wrap: break-word;
-  width: 100%;
 }
 
 .hero-brand-title em {
@@ -319,19 +314,19 @@ section {
 }
 
 .hero-subtitle {
-  font-size: 1.1rem;
+  font-size: 0.85rem; /* Letra más chica y elegante, con buena jerarquía */
   color: #f3e7c4;
   font-weight: 500;
-  margin-bottom: 0.6rem;
-  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
 .hero-desc {
-  font-size: 0.95rem;
+  font-size: 0.85rem; /* Proporcionado y armónico con el resto */
   color: var(--mut);
-  max-width: 550px;
-  margin-bottom: 2.2rem;
+  max-width: 420px;
+  margin-bottom: 2rem;
   line-height: 1.4;
   padding: 0 0.5rem;
 }
