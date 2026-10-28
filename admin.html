@@ -339,15 +339,20 @@
     let todosLosTurnos = [];
     let filtroActual = 'todos';
 
-    // Verificar si ya inició sesión en esta pestaña
-    if (sessionStorage.getItem('cutz_auth') === 'true') {
-      document.getElementById('login-overlay').style.display = 'none';
-      cargarTurnos();
+    // Verificar si ya hay una sesión activa de Supabase al cargar la página
+    if (supabaseClient) {
+      supabaseClient.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          document.getElementById('login-overlay').style.display = 'none';
+          cargarTurnos();
+        }
+      });
     }
 
+    // Manejar el formulario de inicio de sesión
     document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const userInput = document.getElementById('admin-user').value.trim();
+      const emailInput = document.getElementById('admin-user').value.trim();
       const passInput = document.getElementById('admin-pass').value.trim();
       const errorMsg = document.getElementById('login-error');
 
@@ -357,31 +362,30 @@
         return;
       }
 
-      // Consultar la tabla admins en Supabase
-      const { data, error } = await supabaseClient
-        .from('admins')
-        .select('*')
-        .eq('usuario', userInput)
-        .eq('contrasena', passInput)
-        .maybeSingle();
+      // Autenticación oficial y segura con Supabase Auth
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: emailInput,
+        password: passInput,
+      });
 
-      if (error || !data) {
+      if (error || !data.session) {
         errorMsg.textContent = 'Usuario o contraseña incorrectos.';
         errorMsg.style.display = 'block';
         document.getElementById('admin-pass').value = '';
       } else {
-        sessionStorage.setItem('cutz_auth', 'true');
         document.getElementById('login-overlay').style.display = 'none';
         errorMsg.style.display = 'none';
         cargarTurnos();
       }
     });
 
-    window.cerrarSesion = function() {
-      sessionStorage.removeItem('cutz_auth');
+    // Función segura para cerrar sesión
+    window.cerrarSesion = async function() {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+      }
       location.reload();
     }
-
     function toggleFormularioManual() {
       const formContainer = document.getElementById('form-manual');
       formContainer.classList.toggle('open');
