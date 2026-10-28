@@ -921,14 +921,14 @@ footer .wrap.footer-content {
   background-color: var(--gold);
 }
 
-/* --- Sección Principal con fondo texturizado y letras grandes --- */
+/* --- Sección Principal con la imagen de fondo foto-principal.jpg --- */
 .hero-section {
   position: relative;
-  /* Mantiene tu fondo original o una capa oscura translúcida para que la silla/textura se insinúe de fondo */
-  background-color: rgba(10, 10, 10, 0.85);
-  background-image: radial-gradient(circle at center, rgba(30, 30, 30, 0.4) 0%, rgba(10, 10, 10, 0.9) 100%), url('images/tu-fondo.jpg'); /* O tu imagen de fondo actual */
+  /* Capa oscura translúcida encima de la foto para que el texto resalte a la perfección */
+  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpeg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   padding: 7rem 1.5rem 6rem;
   text-align: center;
   border-bottom: 1px solid var(--line);
