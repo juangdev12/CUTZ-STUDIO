@@ -119,72 +119,84 @@ h1 em, h2 em {
   flex-wrap: wrap;
 }
 
-/* Header + menú */
-header {
+/* --- Barra de Navegación --- */
+.site-header {
   position: sticky;
   top: 0;
-  z-index: 30;
-  background: rgba(10, 10, 10, .86);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
-  padding-top: env(safe-area-inset-top, 0px);
+  padding: 0.8rem 0;
 }
 
-header .wrap {
+.header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 78px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-header img {
-  height: 58px;
-  width: auto;
-  display: block;
-}
-
-.hr {
+.logo-link {
   display: flex;
-  gap: .8rem;
   align-items: center;
+  height: 45px;
 }
 
-header .btn {
-  padding: .8rem 1.3rem;
-  font-size: .8rem;
+.header-logo {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
-.burger {
-  width: 52px;
-  height: 46px;
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.menu-toggle-btn {
+  background: var(--bg2);
   border: 1px solid var(--line);
-  background: transparent;
-  border-radius: 3px;
+  border-radius: 6px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   cursor: pointer;
-  display: grid;
-  place-content: center;
-  gap: 6px;
+  transition: border-color 0.3s;
 }
 
-.burger i {
+.menu-toggle-btn:hover {
+  border-color: var(--gold);
+}
+
+.hamburger-line {
   display: block;
-  width: 24px;
+  width: 20px;
   height: 2px;
-  background: var(--tx);
-  transition: transform .4s var(--ease), opacity .3s;
+  background-color: var(--tx);
+  transition: background-color 0.3s;
 }
 
-.burger[aria-expanded="true"] i:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-.burger[aria-expanded="true"] i:nth-child(2) {
-  opacity: 0;
-}
-
-.burger[aria-expanded="true"] i:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+.menu-toggle-btn:hover .hamburger-line {
+  background-color: var(--gold);
 }
 
 #pb {
@@ -229,8 +241,6 @@ header .btn {
   padding: 0.8rem 0;
   border-bottom: 1px solid var(--line);
   color: var(--tx);
-  opacity: 1;
-  transform: none;
   transition: color .3s, padding-left .3s;
 }
 
@@ -243,17 +253,6 @@ header .btn {
   padding-left: 6px;
 }
 
-.menu.open a {
-  opacity: 1;
-  transform: none;
-}
-
-.menu.open a:nth-child(1) { transition-delay: .25s; }
-.menu.open a:nth-child(2) { transition-delay: .32s; }
-.menu.open a:nth-child(3) { transition-delay: .39s; }
-.menu.open a:nth-child(4) { transition-delay: .46s; }
-.menu.open a:nth-child(5) { transition-delay: .53s; }
-
 section {
   padding: 5.5rem 0;
   border-top: 1px solid var(--line);
@@ -263,60 +262,91 @@ section {
   background: var(--bg2);
 }
 
-/* Sección Hero */
-.hero {
-  border: 0;
-  padding: 4.5rem 0 5rem;
-  background-image: linear-gradient(rgba(10, 10, 10, 0.4), rgba(10, 10, 10, 0.6)), url('images/Imagen-Horizontal.jpg');
+/* --- Sección Principal Adaptable (Hero con foto-principal.jpg) --- */
+.hero-section {
+  position: relative;
+  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 6rem 1rem 5rem;
   text-align: center;
-  min-height: 100vh;
+  border-bottom: 1px solid var(--line);
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero .wrap.hero-content {
+.hero-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-}
-
-.logo-container {
-  margin-bottom: 1.8rem;
-  display: flex;
-  justify-content: center;
-}
-
-.vector-logo {
-  max-width: 880px;
   width: 100%;
-  height: auto;
-  display: block;
 }
 
-.hero h1 {
-  font-size: clamp(2.8rem, 6vw, 4.2rem);
-  margin-bottom: 0.8rem;
+.hero-brand-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 9vw, 6rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 1rem;
   letter-spacing: -0.02em;
+  text-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+  word-break: break-word;
 }
 
-.hero p.lead {
-  font-size: 1.3rem;
-  max-width: 50ch;
-  margin: 0 0 0.8rem;
-  color: var(--tx);
+.hero-brand-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.hero p.lead.secondary-desc {
-  font-size: 1.05rem;
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #f3e7c4;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
   color: var(--mut);
+  max-width: 550px;
   margin-bottom: 2.2rem;
+  line-height: 1.4;
+  padding: 0 0.5rem;
+}
+
+/* --- Estilo Premium para el Botón de Reserva --- */
+.btn-gold-premium {
+  display: inline-block;
+  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
+  color: #0a0a0a;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 25px rgba(200, 169, 106, 0.25);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gold-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(200, 169, 106, 0.4);
+  background: linear-gradient(135deg, #fff 0%, #d4b572 100%);
 }
 
 .center-btns {
@@ -409,8 +439,6 @@ section {
   overflow: hidden;
   background: #111;
   border-radius: 2px;
-  clip-path: none !important;
-  opacity: 1 !important;
 }
 
 .grid figure:first-child {
@@ -536,7 +564,7 @@ input, select, textarea {
   border: 1px solid var(--line);
   border-radius: 3px;
   padding: 1rem 1.1rem;
-  font: 300 1.1rem Inter, sans-serif;
+  font: 300 1.1rem 'Outfit', sans-serif;
   margin-bottom: 1.5rem;
   transition: border-color .3s;
   appearance: none;
@@ -553,22 +581,10 @@ select {
 input:focus, select:focus, textarea:focus {
   outline: 0;
   border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
 }
 
-footer {
-  padding: 2.6rem 0 3rem;
-  border-top: 1px solid var(--line);
-  color: var(--mut);
-  font-size: .95rem;
-}
-
-footer .wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
+/* Botón flotante WhatsApp */
 .wa {
   position: fixed;
   right: max(1rem, env(safe-area-inset-right, 0px));
@@ -595,7 +611,7 @@ footer .wrap {
   fill: currentColor;
 }
 
-/* Sección Estudio / Sobre mí grid */
+/* Sección Estudio / Sobre mí */
 .estudio-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -609,43 +625,7 @@ footer .wrap {
   gap: 1.2rem;
 }
 
-/* Responsividad */
-@media (max-width: 820px) {
-  .two, .estudio-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  .row {
-    grid-template-columns: 3rem 1fr;
-  }
-  .row h3 {
-    font-size: 1.8rem;
-  }
-  .hero .btn, .btns .btn {
-    width: 100%;
-  }
-  header .btn {
-    width: auto !important;
-  }
-  form {
-    padding: 1.4rem;
-  }
-  .card {
-    padding: .4rem 1.4rem;
-  }
-  .vector-logo {
-    max-width: 280px;
-  }
-}
-
-@media (min-width: 821px) {
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 380px;
-  }
-}
-
-/* Estilos modernos para el sistema de reservas */
+/* Sistema de reservas */
 .booking-card {
   max-width: 680px;
   margin: 0 auto;
@@ -680,16 +660,6 @@ footer .wrap {
   border-radius: 50%;
   font-size: 0.75rem;
   font-weight: 600;
-}
-
-.modern-input, input, select, textarea {
-  font-family: 'Outfit', sans-serif;
-}
-
-.modern-input:focus {
-  outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
 }
 
 .time-slots-grid {
@@ -733,19 +703,7 @@ footer .wrap {
   text-decoration: line-through;
 }
 
-@media (max-width: 768px) {
-  .booking-card {
-    padding: 1.5rem;
-  }
-  .time-slots-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .booking-step-group label div {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Estilos para la sección de ubicación */
+/* Ubicación */
 .ubicacion-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -772,16 +730,7 @@ footer .wrap {
   transform: translateY(-3px);
 }
 
-@media (max-width: 820px) {
-  .ubicacion-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-/* ==========================================
-   EFECTOS DE DESPLAZAMIENTO MODERNOS (SCROLL REVEAL)
-   ========================================== */
+/* Efectos de desplazamiento (Scroll Reveal) */
 .m, .r, .eyebrow, .grid figure, .row, .step {
   opacity: 0;
   transform: translateY(35px) scale(0.97);
@@ -798,7 +747,7 @@ footer .wrap {
   filter: blur(0);
 }
 
-/* Footer Moderno y Prolijo */
+/* Footer */
 footer {
   background: var(--bg2);
   border-top: 1px solid var(--line);
@@ -831,174 +780,42 @@ footer .wrap.footer-content {
   color: var(--gold);
 }
 
-@media (max-width: 768px) {
+/* Media Queries Responsivas */
+@media (max-width: 820px) {
+  .two, .estudio-grid, .ubicacion-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .row {
+    grid-template-columns: 3rem 1fr;
+  }
+  .row h3 {
+    font-size: 1.8rem;
+  }
+  .hero-section .btn, .btns .btn {
+    width: 100%;
+  }
+  header .btn {
+    width: auto !important;
+  }
+  form, .booking-card {
+    padding: 1.4rem;
+  }
+  .card {
+    padding: .4rem 1.4rem;
+  }
+  .time-slots-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   footer .wrap.footer-content {
     flex-direction: column;
     text-align: center;
   }
 }
 
-/* --- Barra de Navegación Mejorada --- */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-  padding: 0.8rem 0;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-/* Ajuste Proporcional del Logotipo */
-.logo-link {
-  display: flex;
-  align-items: center;
-  height: 45px;
-}
-
-.header-logo {
-  height: 100%;
-  width: auto;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
-/* Contenedor de acciones derechas */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Botón de reserva en el header */
-.header-btn {
-  padding: 0.5rem 1.2rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Botón de menú hamburguesa refinado */
-.menu-toggle-btn {
-  background: var(--bg2);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  cursor: pointer;
-  transition: border-color 0.3s;
-}
-
-.menu-toggle-btn:hover {
-  border-color: var(--gold);
-}
-
-.hamburger-line {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background-color: var(--tx);
-  transition: background-color 0.3s;
-}
-
-.menu-toggle-btn:hover .hamburger-line {
-  background-color: var(--gold);
-}
-
-/* --- Sección Principal con la imagen de fondo foto-principal.jpg --- */
-.hero-section {
-  position: relative;
-  /* Capa oscura translúcida encima de la foto para que el texto resalte a la perfección */
-  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 7rem 1.5rem 6rem;
-  text-align: center;
-  border-bottom: 1px solid var(--line);
-}
-
-.hero-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-/* Nombre CutzStudio Grande y Elegante */
-.hero-brand-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(3.2rem, 8vw, 6.5rem); /* Se adapta para verse imponente en PC y celular */
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.1;
-  margin-bottom: 1.2rem;
-  letter-spacing: -0.02em;
-  text-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-}
-
-.hero-brand-title em {
-  font-style: normal;
-  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-subtitle {
-  font-size: 1.15rem;
-  color: #f3e7c4;
-  font-weight: 500;
-  margin-bottom: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.hero-desc {
-  font-size: 0.95rem;
-  color: var(--mut);
-  max-width: 550px;
-  margin-bottom: 2.5rem;
-  line-height: 1.5;
-}
-
-/* --- Estilo Premium para el Botón de Reserva --- */
-.btn-gold-premium {
-  display: inline-block;
-  background: linear-gradient(135deg, #f3e7c4 0%, #c8a96a 50%, #94783b 100%);
-  color: #0a0a0a;
-  font-weight: 700;
-  font-size: 0.95rem;
-  padding: 0.9rem 2.2rem;
-  border-radius: 6px;
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  box-shadow: 0 10px 25px rgba(200, 169, 106, 0.25);
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-gold-premium:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(200, 169, 106, 0.4);
-  background: linear-gradient(135deg, #fff 0%, #d4b572 100%);
+@media (min-width: 821px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 380px;
+  }
 }
