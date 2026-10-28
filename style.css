@@ -925,7 +925,7 @@ footer .wrap.footer-content {
 .hero-section {
   position: relative;
   /* Capa oscura translúcida encima de la foto para que el texto resalte a la perfección */
-  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foto-principal.jpeg');
+  background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('images/foton-principal.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
