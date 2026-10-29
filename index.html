@@ -42,20 +42,20 @@
   <main>
     <!-- Sección Hero -->
     <section class="hero-section">
-    <div class="wrap hero-container">
-      <!-- Nombre principal grande con la tipografía y estilo dorados -->
-      <h1 class="hero-brand-title">Cutz<br><em>Studio</em></h1>
-      
-      <!-- Subtítulos y descripción -->
-      <p class="hero-subtitle">Peluquería y Barbería en Arrecifes.</p>
-      <p class="hero-desc">Cortes degradados, barba y diseños con precisión profesional.</p>
+      <div class="wrap hero-container">
+        <!-- Nombre principal grande con salto de línea obligatorio para Cutz / Studio -->
+        <h1 class="hero-brand-title">Cutz<br><em>Studio</em></h1>
+        
+        <!-- Subtítulos y descripción -->
+        <p class="hero-subtitle">Peluquería y Barbería en Arrecifes.</p>
+        <p class="hero-desc">Cortes degradados, barba y diseños con precisión profesional.</p>
 
-      <!-- Botón de Reserva -->
-      <div class="hero-action">
-        <a href="#reservas" class="btn-gold-premium">RESERVAR TURNO</a>
+        <!-- Botón de Reserva -->
+        <div class="hero-action">
+          <a href="#reservas" class="btn-gold-premium">RESERVAR TURNO</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
     <!-- El Estudio / Sobre mí -->
     <section class="alt" id="estudio">
@@ -105,49 +105,47 @@
       </div>
     </section>
 
+    <!-- Sección Trabajos con Carrusel Auto-desplazable y Táctil -->
     <section id="trabajos">
-  <div class="wrap">
-    <div class="eyebrow">Galería</div>
-    <h2 class="m">Nuestros <em>Trabajos</em></h2>
-    <p class="r" style="margin-bottom: 2rem;">Deslizá para ver los últimos cortes, degradados y diseños realizados en el estudio.</p>
-    
-    <!-- Carrusel Horizontal -->
-    <div class="carrusel-container">
-      <div class="carrusel-track">
-        <figure class="carrusel-item">
-          <img src="images/f7.jpeg" alt="Asesoramiento">
-          <figcaption>Asoseramiento</figcaption>
-        </figure>
-         <figure class="carrusel-item">
-          <img src="images/f4.jpeg" alt="Diseño Freestyle">
-          <figcaption>Diseño Freestyle</figcaption>
-        </figure>
-        <figure class="carrusel-item">
-          <img src="images/f3.jpeg" alt="Corte Degradado/Fade">
-          <figcaption>Corte Degradado/Fade</figcaption>
-        </figure>
-        <figure class="carrusel-item">
-          <img src="images/f2.jpeg" alt="Corte Clasico">
-          <figcaption>Corte Clasico con tijera</figcaption>
-        </figure>
-       
-        <figure class="carrusel-item">
-          <img src="images/f8.jpeg" alt="Modernos">
-          <figcaption>Cortes Modernos</figcaption>
-        </figure>
-        <figure class="carrusel-item">
-          <img src="images/f1.jpeg" alt="Textura">
-          <figcaption>Activación de Textura</figcaption>
-        </figure>
-        <figure class="carrusel-item">
-          <img src="images/f5.jpeg" alt="Color">
-          <figcaption>Corte y Color</figcaption>
-        </figure>
+      <div class="wrap">
+        <div class="eyebrow">Galería</div>
+        <h2 class="m">Nuestros <em>Trabajos</em></h2>
+        <p class="r" style="margin-bottom: 2rem;">Deslizá o dejá que se mueva solo para ver los últimos cortes, degradados y diseños realizados en el estudio.</p>
         
+        <div class="carrusel-container">
+          <div class="carrusel-track" id="autoCarrusel">
+            <figure class="carrusel-item">
+              <img src="images/f7.jpeg" alt="Asesoramiento">
+              <figcaption>Asesoramiento</figcaption>
+            </figure>
+             <figure class="carrusel-item">
+              <img src="images/f4.jpeg" alt="Diseño Freestyle">
+              <figcaption>Diseño Freestyle</figcaption>
+            </figure>
+            <figure class="carrusel-item">
+              <img src="images/f3.jpeg" alt="Corte Degradado/Fade">
+              <figcaption>Corte Degradado/Fade</figcaption>
+            </figure>
+            <figure class="carrusel-item">
+              <img src="images/f2.jpeg" alt="Corte Clasico">
+              <figcaption>Corte Clásico con tijera</figcaption>
+            </figure>
+            <figure class="carrusel-item">
+              <img src="images/f8.jpeg" alt="Modernos">
+              <figcaption>Cortes Modernos</figcaption>
+            </figure>
+            <figure class="carrusel-item">
+              <img src="images/f1.jpeg" alt="Textura">
+              <figcaption>Activación de Textura</figcaption>
+            </figure>
+            <figure class="carrusel-item">
+              <img src="images/f5.jpeg" alt="Color">
+              <figcaption>Corte y Color</figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- Horarios -->
     <section id="horarios">
@@ -229,9 +227,9 @@
       </div>
     </section>
 
-  </main> <!-- Fin de main -->
+  </main>
 
-  <!-- Sección de Ubicación (Fuera del footer, como sección independiente) -->
+  <!-- Sección de Ubicación -->
   <section id="ubicacion" style="padding: 5.5rem 0;">
     <div class="wrap">
       <div class="center" style="margin-bottom: 3rem;">
@@ -251,7 +249,7 @@
     </div>
   </section>
 
-  <!-- Footer limpio y moderno -->
+  <!-- Footer -->
   <footer>
     <div class="wrap footer-content">
       <span>&copy; 2026 Cutz Barber Studio. Todos los derechos reservados.</span>
@@ -262,10 +260,46 @@
     </div>
   </footer>
 
+  <!-- Botón flotante WhatsApp -->
   <a class="wa" id="wa" href="https://wa.me/5492478505253" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
   </a>
 
   <script src="script.js"></script>
+
+  <!-- Script para el desplazamiento automático y táctil del carrusel de trabajos -->
+  <script>
+    const carrusel = document.getElementById('autoCarrusel');
+    let autoScrollInterval;
+
+    function iniciarAutoScroll() {
+      if (!carrusel) return;
+      autoScrollInterval = setInterval(() => {
+        if (carrusel.scrollLeft + carrusel.clientWidth >= carrusel.scrollWidth - 10) {
+          carrusel.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          carrusel.scrollBy({ left: 320, behavior: 'smooth' });
+        }
+      }, 3000);
+    }
+
+    function detenerAutoScroll() {
+      clearInterval(autoScrollInterval);
+    }
+
+    if (carrusel) {
+      carrusel.addEventListener('touchstart', detenerAutoScroll, { passive: true });
+      carrusel.addEventListener('mouseenter', detenerAutoScroll);
+
+      carrusel.addEventListener('touchend', () => {
+        setTimeout(iniciarAutoScroll, 4000);
+      });
+      carrusel.addEventListener('mouseleave', () => {
+        setTimeout(iniciarAutoScroll, 4000);
+      });
+
+      iniciarAutoScroll();
+    }
+  </script>
 </body>
 </html>
