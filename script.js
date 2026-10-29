@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const fechaFormateada = new Date(anio, mes - 1, dia).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
       const mensaje = encodeURIComponent(`Hola! Reservé un turno en Cutz Studio.\n\n👤 Nombre: ${nombre}\n✂️ Servicio: ${servicio}\n📅 Fecha: ${fechaFormateada}\n⏰ Hora: ${hora} hs`);
       
-      window.open(`https://wa.me/5492478505253?text=${mensaje}`, '_blank');
+      window.open(`https://wa.me/5492478516972?text=${mensaje}`, '_blank');
       
       alert('¡Turno reservado con éxito!');
       bookingForm.reset();
