@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
      MENÚ DESPLEGABLE MINIMALISTA (HAMBURGUESA)
      ========================================== */
   var bg = $('#bg'), mn = $('#menu');
-  function tog(o) {
-    if(bg) bg.setAttribute('aria-expanded', o);
-    if(mn) mn.classList.toggle('open', o);
-  }
-  if (bg && mn) {
+   function tog(o) {
+     if(bg) bg.setAttribute('aria-expanded', o);
+     if(mn) mn.classList.toggle('open', o);
+   }
+     if (bg && mn) {
     bg.onclick = function (e) {
       e.stopPropagation();
       tog(bg.getAttribute('aria-expanded') !== 'true');
@@ -61,16 +61,19 @@ document.addEventListener('DOMContentLoaded', function() {
   const bookingForm = $('#f');
 
   if (fechaInput) {
-    const hoy = new Date().toISOString().split('T')[0];
-    fechaInput.min = hoy;
-    fechaInput.value = hoy;
+  const hoy = new Date().toISOString().split('T')[0];
+  fechaInput.min = hoy;
+  fechaInput.value = hoy;
+  fechaInput.addEventListener('change', function() {
+    cargarHorariosDisponibles(this.value);
+  });
+  cargarHorariosDisponibles(hoy);
 
-    fechaInput.addEventListener('change', function() {
-      cargarHorariosDisponibles(this.value);
-    });
-
-    cargarHorariosDisponibles(hoy);
+  // Error: Declarar una función completa aquí dentro sin cerrar el bloque previo
+  async function cargarHorariosDisponibles(fechaSeleccionada) {
+    // ...
   }
+ }
 
   async function cargarHorariosDisponibles(fechaSeleccionada) {
     if (!grillaHorarios) return;
