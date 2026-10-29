@@ -66,6 +66,7 @@
     .filter-btns {
       display: flex;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
     .filter-btn {
       background: var(--bg2);
@@ -168,6 +169,7 @@
       gap: 0.4rem;
       transition: background 0.2s;
       margin-right: 0.5rem;
+      margin-bottom: 0.3rem;
     }
     .btn-wa-action:hover {
       background: #25d366;
@@ -206,18 +208,18 @@
   </div>
 
   <header>
-    <div class="wrap">
-      <a href="index.html" aria-label="Inicio">
-        <img src="images/logo.jpg" alt="Cutz Studio">
+    <div class="wrap" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+      <a href="index.html" aria-label="Inicio" style="color: var(--gold); text-decoration: none; font-weight: 700; font-size: 1.2rem; font-family: 'Syne', sans-serif;">
+        Cutz Studio <span style="font-weight: 300; font-size: 0.9rem; color: var(--mut);">| Admin</span>
       </a>
-      <div class="hr">
-        <button onclick="cerrarSesion()" class="btn ghost" style="margin-right: 0.5rem; font-size: 0.75rem; padding: 0.6rem 1rem;">Cerrar Sesión</button>
-        <a class="btn ghost" href="index.html">Ver Sitio Web</a>
+      <div class="hr" style="display: flex; align-items: center; gap: 0.5rem;">
+        <button onclick="cerrarSesion()" class="btn ghost" style="font-size: 0.75rem; padding: 0.6rem 1rem;">Cerrar Sesión</button>
+        <a class="btn ghost" href="index.html" style="font-size: 0.75rem; padding: 0.6rem 1rem;">Ver Sitio</a>
       </div>
     </div>
   </header>
 
-  <main style="padding: 3rem 0 5rem;">
+  <main style="padding: 2rem 0 5rem;">
     <div class="wrap">
       <div class="eyebrow">Panel de Control</div>
       <h2 class="m">Gestión de <em>Turnos</em></h2>
@@ -246,8 +248,8 @@
           <button class="filter-btn" onclick="filtrarTurnos('hoy', this)">Hoy</button>
           <button class="filter-btn" onclick="filtrarTurnos('futuros', this)">Próximos</button>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button onclick="toggleFormularioManual()" class="filter-btn" style="background: var(--gold); color: #0a0a0a; font-weight: 600;">➕ Nuevo Turno Manual</button>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button onclick="toggleFormularioManual()" class="filter-btn" style="background: var(--gold); color: #0a0a0a; font-weight: 600;">➕ Nuevo Turno</button>
           <button onclick="cargarTurnos()" class="filter-btn" style="color: var(--gold); border-color: var(--gold);">🔄 Actualizar</button>
         </div>
       </div>
