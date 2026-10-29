@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
      MENÚ DESPLEGABLE MINIMALISTA (HAMBURGUESA)
      ========================================== */
   var bg = $('#bg'), mn = $('#menu');
-   function tog(o) {
-     if(bg) bg.setAttribute('aria-expanded', o);
-     if(mn) mn.classList.toggle('open', o);
-   }
-     if (bg && mn) {
+  function tog(o) {
+    if(bg) bg.setAttribute('aria-expanded', o);
+    if(mn) mn.classList.toggle('open', o);
+  }
+
+  if (bg && mn) {
     bg.onclick = function (e) {
       e.stopPropagation();
       tog(bg.getAttribute('aria-expanded') !== 'true');
@@ -60,28 +61,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const horaSeleccionadaInput = $('#hora-seleccionada');
   const bookingForm = $('#f');
 
-  if (fechaInput) {
-  const hoy = new Date().toISOString().split('T')[0];
-  fechaInput.min = hoy;
-  fechaInput.value = hoy;
-  fechaInput.addEventListener('change', function() {
-    cargarHorariosDisponibles(this.value);
-  });
-  cargarHorariosDisponibles(hoy);
+  // Horarios estándar por defecto (Fallback si no hay tabla de configuración)
+  const HORARIOS_PREDETERMINADOS = [
+    "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+    "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30"
+  ];
 
-  // Error: Declarar una función completa aquí dentro sin cerrar el bloque previo
-  async function cargarHorariosDisponibles(fechaSeleccionada) {
-    // ...
+  if (fechaInput) {
+    const hoyArg = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
+    fechaInput.min = hoyArg;
+    fechaInput.value = hoyArg;
+    fechaInput.addEventListener('change', function() {
+      cargarHorariosDisponibles(this.value);
+    });
+    cargarHorariosDisponibles(hoyArg);
   }
- }
 
   async function cargarHorariosDisponibles(fechaSeleccionada) {
     if (!grillaHorarios) return;
     
     grillaHorarios.innerHTML = `<p style="grid-column: span 4; color: var(--mut); font-size: 0.9rem; text-align: center; padding: 1rem 0;">Cargando horarios...</p>`;
-    horaSeleccionadaInput.value = '';
+    if (horaSeleccionadaInput) horaSeleccionadaInput.value = '';
 
-    const [anio, mes, dia] = fechaSeleccionada.split('-');
+    const [anio, mes, dia] = fechaSeleccionada.split('-').map(Number);
     const fechaObj = new Date(anio, mes - 1, dia);
     let diaSemana = fechaObj.getDay(); // 0: Domingo, 1: Lunes, ..., 6: Sábado
 
@@ -93,20 +95,24 @@ document.addEventListener('DOMContentLoaded', function() {
     let franjasHorarias = [];
 
     if (supabaseClient) {
-      const { data: configDia } = await supabaseClient
-        .from('horarios_atencion')
-        .select('turnos_json, activo')
-        .eq('dia_semana', diaSemana)
-        .maybeSingle();
+      try {
+        const { data: configDia } = await supabaseClient
+          .from('horarios_atencion')
+          .select('turnos_json, activo')
+          .eq('dia_semana', diaSemana)
+          .maybeSingle();
 
-      if (configDia && configDia.activo) {
-        franjasHorarias = configDia.turnos_json;
+        if (configDia && configDia.activo && configDia.turnos_json) {
+          franjasHorarias = configDia.turnos_json;
+        }
+      } catch (e) {
+        console.warn('No se pudo obtener la configuración de horarios, usando estándar.', e);
       }
     }
 
+    // Usar horarios predeterminados si no vino nada de la base de datos
     if (franjasHorarias.length === 0) {
-      grillaHorarios.innerHTML = `<p style="grid-column: span 4; color: var(--mut); text-align: center; padding: 1rem 0;">No hay turnos disponibles para esta fecha.</p>`;
-      return;
+      franjasHorarias = HORARIOS_PREDETERMINADOS;
     }
 
     // Detectar si la fecha seleccionada es el día de HOY en Argentina
@@ -123,18 +129,22 @@ document.addEventListener('DOMContentLoaded', function() {
     let turnosOcupados = [];
 
     if (supabaseClient) {
-      const { data, error } = await supabaseClient
-        .from('turnos')
-        .select('fecha_hora')
-        .eq('estado', 'confirmado');
+      try {
+        const { data, error } = await supabaseClient
+          .from('turnos')
+          .select('fecha_hora')
+          .in('estado', ['confirmado', 'pendiente']);
 
-      if (!error && data) {
-        turnosOcupados = data.map(t => {
-          const d = new Date(t.fecha_hora);
-          const dStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-          const hStr = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-          return { fecha: dStr, hora: hStr };
-        }).filter(t => t.fecha === fechaSeleccionada).map(t => t.hora);
+        if (!error && data) {
+          turnosOcupados = data.map(t => {
+            const dateObj = new Date(t.fecha_hora);
+            const dStr = dateObj.toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
+            const hStr = dateObj.toLocaleTimeString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
+            return { fecha: dStr, hora: hStr };
+          }).filter(t => t.fecha === fechaSeleccionada).map(t => t.hora);
+        }
+      } catch (err) {
+        console.error('Error al consultar turnos ocupados:', err);
       }
     }
 
@@ -165,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btnHora.addEventListener('click', function() {
           $$('.time-slot-btn').forEach(b => b.classList.remove('selected'));
           btnHora.classList.add('selected');
-          horaSeleccionadaInput.value = hora;
+          if (horaSeleccionadaInput) horaSeleccionadaInput.value = hora;
         });
       }
 
@@ -179,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const servicio = $('#s').value;
       const fecha = $('#fecha-input').value;
-      const hora = horaSeleccionadaInput.value;
+      const hora = horaSeleccionadaInput ? horaSeleccionadaInput.value : '';
       const nombre = $('#n').value.trim();
       const telefono = $('#t').value.trim();
 
@@ -188,8 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      const [anio, mes, dia] = fecha.split('-');
-      const [h, m] = hora.split(':');
+      const [anio, mes, dia] = fecha.split('-').map(Number);
+      const [h, m] = hora.split(':').map(Number);
       const fechaLocalObj = new Date(anio, mes - 1, dia, h, m, 0);
       const isoString = fechaLocalObj.toISOString();
 
@@ -197,12 +207,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const { data: turnosExistentes } = await supabaseClient
           .from('turnos')
           .select('*')
-          .eq('estado', 'confirmado');
+          .in('estado', ['confirmado', 'pendiente']);
 
         const yaOcupado = (turnosExistentes || []).some(t => {
-          const d = new Date(t.fecha_hora);
-          const dStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-          const hStr = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+          const dateObj = new Date(t.fecha_hora);
+          const dStr = dateObj.toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
+          const hStr = dateObj.toLocaleTimeString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
           return dStr === fecha && hStr === hora;
         });
 
@@ -235,7 +245,10 @@ document.addEventListener('DOMContentLoaded', function() {
       
       alert('¡Turno reservado con éxito!');
       bookingForm.reset();
-      if(fechaInput) fechaInput.value = new Date().toISOString().split('T')[0];
+      if (fechaInput) {
+        const hoyArg = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
+        fechaInput.value = hoyArg;
+      }
       cargarHorariosDisponibles(fechaInput.value);
     });
   }
